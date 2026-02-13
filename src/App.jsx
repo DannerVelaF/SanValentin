@@ -37,11 +37,11 @@ const Confetti = ({ active }) => {
 
 // --- DATOS DE MEMORIAS ---
 const MEMORIES = [
-    { id: 1, text: "Nuestra primera cita", rotate: -2, src: "images/image_1.jpeg" },
-    { id: 2, text: "Ese viaje inolvidable", rotate: 3, src: "images/image_2.jpeg" },
-    { id: 3, text: "Tu sonrisa favorita", rotate: -4, src: "images/image_3.jpeg" },
-    { id: 4, text: "Un detalle hermoso", rotate: 2, src: "images/image_4.jpeg" },
-    { id: 5, text: "Atardecer juntos", rotate: -3, src: "images/image_5.jpeg" },
+    { id: 1, text: "Buscado hacerte sonreir", rotate: -2, src: "images/image_1.jpeg" },
+    { id: 2, text: "Siendo solo tu y yo", rotate: 3, src: "images/image_2.jpeg" },
+    { id: 3, text: "Siempre buscando hacerte feliz", rotate: -4, src: "images/image_3.jpeg" },
+    { id: 4, text: "En tu lugar favorito", rotate: 2, src: "images/image_4.jpeg" },
+    { id: 5, text: "Nuestra actividad favorita", rotate: -3, src: "images/image_5.jpeg" },
     { id: 6, text: "Siempre nosotros", rotate: 4, src: "images/image_6.jpeg" },
 ];
 
