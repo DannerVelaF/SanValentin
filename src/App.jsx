@@ -17,29 +17,18 @@ import {
 } from "lucide-react";
 
 // --- COMPONENTE DE CONFETI ---
-const Confetti = () => {
+const Confetti = ({ active }) => {
+    if (!active) return null;
     return (
         <div className="fixed inset-0 pointer-events-none z-[100] overflow-hidden w-full h-full">
             {[...Array(70)].map((_, i) => (
                 <motion.div
                     key={i}
                     className={`absolute w-3 h-3 md:w-4 md:h-4 rounded-full ${['bg-red-500', 'bg-pink-400', 'bg-gold-400', 'bg-white', 'bg-rose-600'].sort(() => 0.5 - Math.random())[0]}`}
-                    style={{
-                        left: `${Math.random() * 100}%`,
-                        top: -20
-                    }}
+                    style={{ left: `${Math.random() * 100}%`, top: -20 }}
                     initial={{ opacity: 1, scale: Math.random() * 0.5 + 0.5 }}
-                    animate={{
-                        top: "110vh",
-                        rotate: Math.random() * 720,
-                        x: Math.random() * 100 - 50
-                    }}
-                    transition={{
-                        duration: Math.random() * 3 + 3,
-                        ease: "linear",
-                        repeat: Infinity,
-                        delay: Math.random() * 2
-                    }}
+                    animate={{ top: "110vh", rotate: Math.random() * 720, x: Math.random() * 100 - 50 }}
+                    transition={{ duration: Math.random() * 3 + 2, ease: "linear", repeat: Infinity, delay: Math.random() * 0.5 }}
                 />
             ))}
         </div>
@@ -139,9 +128,10 @@ function App() {
     const targetDate = new Date("2026-02-14T18:00:00").getTime();
     const [timeLeft, setTimeLeft] = useState({ dias: 0, horas: 0, minutos: 0, segundos: 0 });
     const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
-    const [isAccepted, setIsAccepted] = useState(false);
     const [noBtnPosition, setNoBtnPosition] = useState({ x: 0, y: 0 });
-
+    const [isAccepted, setIsAccepted] = useState(false);
+    const [showConfetti, setShowConfetti] = useState(false); // Nuevo estado para duración
+    const [showSecret, setShowSecret] = useState(false);
     useEffect(() => {
         const timer = setInterval(() => {
             const now = new Date().getTime();
@@ -160,6 +150,10 @@ function App() {
 
     const handleAccept = () => {
         setIsAccepted(true);
+        setShowConfetti(true);
+        // El confeti se detiene después de 4 segundos
+        setTimeout(() => setShowConfetti(false), 4000);
+
         setTimeout(() => {
             document.getElementById("final-letter")?.scrollIntoView({ behavior: "smooth" });
         }, 300);
@@ -191,7 +185,6 @@ function App() {
                     {/* --- FONDO --- */}
                     <div className="fixed inset-0 z-0 pointer-events-none">
                         <div className="absolute inset-0 bg-[#f4e4bc]"></div>
-                        <div className="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-multiply" style={{ backgroundImage: "url('imagen.jpg')" }}></div>
                         <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(59,33,12,0.2)]" style={{ backgroundImage: `url("${patternSVG}")`, backgroundSize: '300px 300px', backgroundRepeat: 'repeat' }}></div>
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(80,50,20,0.3)_100%)]"></div>
                     </div>
@@ -263,22 +256,34 @@ function App() {
                                     ))}
                                 </div>
                                 {/* BROMA UBICACION */}
-                                <div className="mt-12 h-48 relative overflow-hidden rounded-sm border border-[#fff] shadow-sm group bg-white/60 backdrop-blur-sm cursor-help select-none">
-                                    <div className="absolute inset-0 flex flex-col justify-center p-6 z-10 transition-opacity duration-300 group-hover:opacity-50">
+                                <div
+                                    className="mt-12 h-48 relative overflow-hidden rounded-sm border border-[#fff] shadow-sm bg-white/60 backdrop-blur-sm cursor-help select-none"
+                                    onClick={() => setShowSecret(!showSecret)} // Funciona en móvil
+                                    onMouseEnter={() => setShowSecret(true)}    // Funciona en PC
+                                    onMouseLeave={() => setShowSecret(false)}   // Funciona en PC
+                                >
+                                    {/* CAPA FRONTAL (SECRETO) */}
+                                    <div className={`absolute inset-0 flex flex-col justify-center p-6 z-10 transition-opacity duration-500 ${showSecret ? 'opacity-0' : 'opacity-100'}`}>
                                         <div className="absolute top-2 right-2 opacity-20"><MapPin size={24} /></div>
                                         <p className="font-['Cinzel'] text-xs uppercase tracking-widest text-[#8b5a2b] mb-2 font-bold text-center">Ubicación Secreta</p>
                                         <div className="bg-black/5 p-3 rounded mb-2 backdrop-blur-md">
-                                            <p className="text-lg md:text-xl font-['Playfair_Display'] font-bold text-[#2c1810] blur-[3px] group-hover:blur-[2px] transition-all text-center">Calle del Amor 123</p>
+                                            <p className="text-lg md:text-xl font-['Playfair_Display'] font-bold text-[#2c1810] blur-[4px] text-center">Calle del Amor 123</p>
                                         </div>
-                                        <p className="text-[10px] text-[#8b5a2b] uppercase tracking-wider animate-pulse text-center">(Pasa el mouse / toca para ver)</p>
+                                        <p className="text-[10px] text-[#8b5a2b] uppercase tracking-wider animate-pulse text-center">
+                                            {('ontouchstart' in window) ? "(Toca para revelar)" : "(Pasa el mouse para revelar)"}
+                                        </p>
                                     </div>
-                                    <div className="absolute inset-0 z-20 bg-[#fdf6e3] flex flex-col items-center justify-center translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+
+                                    {/* CAPA TRASERA (BROMITA) */}
+                                    <div className={`absolute inset-0 z-20 bg-[#fdf6e3] flex flex-col items-center justify-center transition-transform duration-500 ${showSecret ? 'translate-y-0' : 'translate-y-full'}`}>
                                         <div className="relative w-20 h-20 md:w-24 md:h-24 mb-2">
-                                            <div className="absolute inset-0 rounded-full border-4 border-[#8b0000] shadow-lg overflow-hidden ">
+                                            <div className="absolute inset-0 rounded-full border-4 border-[#8b0000] shadow-lg overflow-hidden">
                                                 <img src="images/yanloca.jpeg" className="w-full h-full object-cover" alt="Foto graciosa" />
                                             </div>
                                         </div>
-                                        <p className="text-lg md:text-xl text-[#8b0000] text-center leading-none px-4 font-bold">¡Ya pues enana cabezona, deja de ser chismosa!</p>
+                                        <p className="text-lg md:text-xl text-[#8b0000] text-center leading-none px-4 font-bold">
+                                            ¡Ya pues enana cabezona, deja de ser chismosa!
+                                        </p>
                                     </div>
                                 </div>
                             </section>
