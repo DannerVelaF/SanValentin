@@ -38,12 +38,12 @@ const Confetti = () => {
 // --- FOTOS ---
 // Rutas corregidas según tu captura de pantalla: /images/image_X.jpeg
 const MEMORIES = [
-    { id: 1, text: "Juntos es mi lugar favorito", rotate: -2, src: "/images/image_1.jpeg" },
-    { id: 2, text: "Tu sonrisa me ilumina", rotate: 3, src: "/images/image_2.jpeg" },
-    { id: 3, text: "Detalles que enamoran", rotate: -4, src: "/images/image_3.jpeg" },
-    { id: 4, text: "Atardeceres contigo", rotate: 2, src: "/images/image_4.jpeg" },
-    { id: 5, text: "Momentos inolvidables", rotate: -3, src: "/images/image_5.jpeg" },
-    { id: 6, text: "Siempre nosotros", rotate: 4, src: "/images/image_6.jpeg" },
+    { id: 1, text: "Juntos es mi lugar favorito", rotate: -2, src: "images/image_1.jpeg" },
+    { id: 2, text: "Tu sonrisa me ilumina", rotate: 3, src: "images/image_2.jpeg" },
+    { id: 3, text: "Detalles que enamoran", rotate: -4, src: "images/image_3.jpeg" },
+    { id: 4, text: "Atardeceres contigo", rotate: 2, src: "images/image_4.jpeg" },
+    { id: 5, text: "Momentos inolvidables", rotate: -3, src: "images/image_5.jpeg" },
+    { id: 6, text: "Siempre nosotros", rotate: 4, src: "images/image_6.jpeg" },
 ];
 
 const Envelope = ({ onOpen }) => {
